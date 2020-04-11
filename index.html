@@ -49,7 +49,7 @@
 	// Bring in the export!
 	const createMapLayerFromLayerExportInfo = (layerExportInfo) => {
 		const source = new carto.source.SQL(layerExportInfo.options.query)
-		debugger
+
 		const style = new carto.style.CartoCSS(layerExportInfo.options.tile_style)
 
 		return new carto.layer.Layer(source, style)
