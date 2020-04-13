@@ -11,7 +11,8 @@ class Map {
 			{ maxZoom: 18 },
 		).addTo(this._map);
 		
-		this._countyPrepLayer = this._addMapLayerFromLayerExportInfo(layers[0])
+		this._countyPrepLayerInfo = layers[0]
+		this._countyPrepLayer = this._addMapLayerFromLayerExportInfo(this._countyPrepLayerInfo)
 		this._addLayersToMap()
 		
 		this.addPopupFor(this._countyPrepLayer)
@@ -22,29 +23,14 @@ class Map {
 		const popup = L.popup({ closeButton: false });
 		
 		const openPopup = (featureEvent) => {
-			let content = '<div class="widget">';
+			const fields = this._countyPrepLayerInfo.options.featureOverColumns
 			
-			if (featureEvent.data.name) {
-				content += `<h2 class="h2">${featureEvent.data.name}</h2>`;
-			}
+			const popupInjectedWithData = fields.reduce(
+				(_popupStr, field) => _popupStr.replace(`{{${field}}}`, featureEvent.data[field]),
+				popupHTMLTemplate,
+			)
 			
-			if (featureEvent.data.pop_max || featureEvent.data.pop_min) {
-				content += `<ul>`;
-				
-				if (featureEvent.data.pop_max) {
-					content += `<li><h3>Max:</h3><p class="open-sans">${featureEvent.data.pop_max}</p></li>`;
-				}
-				
-				if (featureEvent.data.pop_min) {
-					content += `<li><h3>Min:</h3><p class="open-sans">${featureEvent.data.pop_min}</p></li>`;
-				}
-				
-				content += `</ul>`;
-			}
-			
-			content += `hiiiii</div>`;
-			
-			popup.setContent(content);
+			popup.setContent(popupInjectedWithData);
 			popup.setLatLng(featureEvent.latLng);
 			if (!popup.isOpen()) {
 				popup.openOn(this._map);

@@ -13,12 +13,16 @@
 
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:600" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="popup.css">
+
 </head>
 <body>
 
 <div id="map">
 </div>
 
+<script src="popupHTMLTemplate.js"></script>
 <script src="Map.js"></script>
 
 <script>
@@ -29,10 +33,27 @@
 	}
 
 	const layers = [
-	  {
-	  	dataset: 'county_preparedness_score_v0_3',
-		options: { featureOverColumns: ['name', 'prep_level'] },
-		style: `#layer {
+		{
+			dataset: 'county_preparedness_score_v0_3',
+			options: {
+				featureOverColumns: [
+					'name',
+				  	'st_stusps',
+					'prep_score',
+					'prep_level',
+					'pc_score',
+					'hr_score',
+					'dem_score',
+					'se_score',
+					'covid_score',
+					'total_staff_dt_100k',
+					'total_estimated_bed_40_mins_100k',
+					'pct_65_over_2018',
+					'svi_socioeconomic',
+					'icuover_max_needed_100k',
+				]
+			},
+			style: `#layer {
 		  polygon-fill: ramp(
 			[prep_score],
 			(
@@ -50,7 +71,7 @@
 		  line-color: #FFFFFF;
 		  line-opacity: 0.5;
 		}`
-	  }
+		}
 	]
 
 
