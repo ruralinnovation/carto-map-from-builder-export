@@ -18,17 +18,40 @@
 <div id="map">
 </div>
 
-<script src="map-export.js"></script>
 <script src="Map.js"></script>
 
 <script>
 
 	const cartoClientCredentials = {
-		apiKey: 'GX9IOaKZ99m33ZWLewLvVQ',
+		apiKey: 'cNChT-6tYUR1uDCnrvtmkA',
 		username: 'ruralinnovation-admin'
 	}
 
-	const map = new Map('map', cartoClientCredentials, mapExportJSON)
+	const layers = [
+	  {
+	  	query: 'SELECT * FROM "ruralinnovation-admin".county_preparedness_score_v0_3',
+		style: `#layer {
+		  polygon-fill: ramp(
+			[prep_score],
+			(
+			  #dc0302,
+			  #DD6F4C,
+			  #1FADB6,
+			  #76D282,
+			  #77ff02
+			),
+			equal
+		  );
+		}
+		#layer::outline {
+		  line-width: 0.4;
+		  line-color: #FFFFFF;
+		  line-opacity: 0.5;
+		}`
+	  }
+	]
+
+	const map = new Map('map', cartoClientCredentials, layers)
 
 	const manhattanLatLon = { lon: -73.96777, lat: 40.68349 }
 	const windsorCountyVT = { lon: -72.39810, lat: 43.49662 }
