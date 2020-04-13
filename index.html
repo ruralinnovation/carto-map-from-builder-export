@@ -14,29 +14,17 @@
 	<link href="https://carto.com/developers/carto-js/examples/maps/public/style.css" rel="stylesheet">
 </head>
 <body>
+
 <div id="map">
 </div>
-<!-- Description -->
-<aside class="toolbox">
-	<div class="box">
-		<header>
-			<h1>Add a layer</h1>
-			<button class="github-logo js-source-link"></button>
-		</header>
-		<section>
-			<p class="description open-sans">Add one CARTO layer to your map.</p>
-		</section>
-		<footer class="js-footer"></footer>
-	</div>
-</aside>
 
 <script src="map-export.js"></script>
 
 <script>
-	const map = L.map('map').setView([30, 0], 3);
+	const map = L.map('map').setView([38.63765, -100.55221], 3.8);
 	map.scrollWheelZoom.disable();
 
-	L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}.png', {
+	L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png', {
 		maxZoom: 18
 	}).addTo(map);
 
