@@ -9,9 +9,10 @@
 	<link href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" rel="stylesheet">
 	<!-- Include CARTO.js -->
 	<script src="https://libs.cartocdn.com/carto.js/v4.2.0/carto.min.js"></script>
+	<link href="https://carto.com/developers/carto-js/examples/maps/public/style.css" rel="stylesheet">
+
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:600" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-	<link href="https://carto.com/developers/carto-js/examples/maps/public/style.css" rel="stylesheet">
 </head>
 <body>
 
@@ -29,7 +30,8 @@
 
 	const layers = [
 	  {
-	  	query: 'SELECT * FROM "ruralinnovation-admin".county_preparedness_score_v0_3',
+	  	dataset: 'county_preparedness_score_v0_3',
+		options: { featureOverColumns: ['name', 'prep_level'] },
 		style: `#layer {
 		  polygon-fill: ramp(
 			[prep_score],
@@ -51,18 +53,19 @@
 	  }
 	]
 
+
 	const map = new Map('map', cartoClientCredentials, layers)
 
 	const manhattanLatLon = { lon: -73.96777, lat: 40.68349 }
 	const windsorCountyVT = { lon: -72.39810, lat: 43.49662 }
 
-	setTimeout(() => {
-		map.flyToCounty(manhattanLatLon)
-	}, 2000)
-
-	setTimeout(() => {
-		map.flyToCounty(windsorCountyVT)
-	}, 5000)
+	// setTimeout(() => {
+	// 	map.flyToCounty(manhattanLatLon)
+	// }, 2000)
+	//
+	// setTimeout(() => {
+	// 	map.flyToCounty(windsorCountyVT)
+	// }, 5000)
 
 
 
