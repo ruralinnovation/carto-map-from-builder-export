@@ -30,6 +30,16 @@
 
 	const map = new Map('map', cartoClientCredentials, mapExportJSON)
 
+	const manhattanLatLon = { lon: -73.96777, lat: 40.68349 }
+	const windsorCountyVT = { lon: -72.39810, lat: 43.49662 }
+
+	setTimeout(() => {
+		map.flyToCounty(manhattanLatLon)
+	}, 2000)
+
+	setTimeout(() => {
+		map.flyToCounty(windsorCountyVT)
+	}, 5000)
 
 
 

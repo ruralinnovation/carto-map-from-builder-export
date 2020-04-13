@@ -2,7 +2,7 @@
 
 class Map {
 	constructor(rootId, cartoClientCredentials, mapExportJSON) {
-		debugger
+		this._COUNTY_LEVEL_ZOOM = 8
 		this._cartoClient = new carto.Client(cartoClientCredentials);
 		this._map = L.map(rootId).setView([38.63765, -100.55221], 3.8);
 		this._map.scrollWheelZoom.disable();
@@ -14,17 +14,27 @@ class Map {
 		
 		const cartoLayersInfo =	mapExportJSON.visualization.layers.filter(({kind}) => kind === 'carto')
 		cartoLayersInfo.forEach(layerExportInfo => this._addMapLayerFromLayerExportInfo(layerExportInfo))
-		// Final add
-		this._cartoClient.getLeafletLayer().addTo(this._map);
+		
+		this._addLayersToMap()
 	}
+	
+	
+	_addLayersToMap = () => this._cartoClient.getLeafletLayer().addTo(this._map);
 	
 	
 	_addMapLayerFromLayerExportInfo = (layerExportInfo) => {
 		const source = new carto.source.SQL(layerExportInfo.options.query)
 		const style = new carto.style.CartoCSS(layerExportInfo.options.tile_style)
 		const layer = new carto.layer.Layer(source, style)
-		debugger
-		this._cartoClient.addLayer(layer);
 		
+		this._cartoClient.addLayer(layer);
+	}
+	
+	// Public
+	flyToCounty = (latLon, zoom = null) => {
+		this._map.flyTo(
+			latLon,
+			typeof(zoom) === 'number' || this._COUNTY_LEVEL_ZOOM,
+		)
 	}
 }
