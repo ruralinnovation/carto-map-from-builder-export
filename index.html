@@ -4,6 +4,8 @@
 	<title>Single layer | CARTO</title>
 	<meta name="viewport" content="initial-scale=1.0">
 	<meta charset="utf-8">
+
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 	<!-- Include Leaflet -->
 	<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
 	<link href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" rel="stylesheet">
@@ -37,9 +39,10 @@
 		{
 			dataset: 'county_preparedness_score_v0_3',
 			options: {
+				featureClickColumns: ['cartodb_id'],
 				featureOverColumns: [
 					'name',
-				  	'st_stusps',
+					'st_stusps',
 					'prep_score',
 					'prep_level',
 					'pc_score',

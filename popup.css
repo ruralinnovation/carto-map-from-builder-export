@@ -147,4 +147,10 @@
 	margin: 0;
 }
 
+.leaflet-popup-tip-container {
+	margin-left: -24px;
+}
 
+.leaflet-popup-tip-container .leaflet-popup-tip {
+	background: #000;
+}
