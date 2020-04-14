@@ -439,23 +439,6 @@ const popupHTMLTemplate = `
 			</div>
 		</div>
 
-		<div style="
-			position: relative;
-			bottom: 25px;
-			left: 24px;
-	">
-			<div style="
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 0;
-			height: 0;
-			border-top: 16px solid #2e3c42;
-			border-right: 24px solid transparent;
-			z-index: 3;
-				"/>
-		</div>
-
 	</div>
 </div>
 

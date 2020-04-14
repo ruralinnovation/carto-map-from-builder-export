@@ -52,7 +52,7 @@ class Map {
 			layer.on('featureOver', openPopup);
 			layer.on('featureOut', closePopup);
 		}
-		setPopupsHover()
+		setPopupsClick()
 	}
 	
 	

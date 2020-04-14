@@ -1,1 +1,15 @@
+.leaflet-popup-content-wrapper {
+	padding: 0;
+}
 
+.leaflet-popup-content-wrapper .leaflet-popup-content {
+	margin: 0;
+}
+
+.CDB-infowindow.CDB-infowindow--dark {
+	min-width: 400px;
+	overflow-x: hidden;
+
+	max-height: 500px;
+	overflow-y: scroll;
+}
