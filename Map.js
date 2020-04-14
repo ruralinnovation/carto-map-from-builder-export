@@ -26,7 +26,10 @@ class Map {
 			const fields = this._countyPrepLayerInfo.options.featureOverColumns
 			
 			const popupInjectedWithData = fields.reduce(
-				(_popupStr, field) => _popupStr.replace(`{{${field}}}`, featureEvent.data[field]),
+				(_popupStr, field) => {
+					const re = new RegExp(`{{${field}}}`,"g");
+					return _popupStr.replace(re, featureEvent.data[field])
+				},
 				popupHTMLTemplate,
 			)
 			
