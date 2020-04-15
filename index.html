@@ -39,41 +39,35 @@
 	const layers = [
 		{
 			dataset: 'county_preparedness_score_v0_3',
-			options: {
-				featureClickColumns: [
-					'cartodb_id',
-				  	// For popup:
-					'name',
-					'st_stusps',
-					'prep_score',
-					'prep_level',
-					'pc_score',
-					'hr_score',
-					'dem_score',
-					'se_score',
-					'covid_score',
-					'total_staff_dt_100k',
-					'total_estimated_bed_40_mins_100k',
-					'pct_65_over_2018',
-					'svi_socioeconomic',
-					'icuover_max_needed_100k',
-				],
-				featureOverColumns: [],
-			},
-			style: `#layer {
-  polygon-fill: ramp(
-    [prep_score],
-    (
-      #dc0302,
-      #DD6F4C,
-      #1FADB6,
-      #76D282,
-      #77ff02
-    ),
-    equal
-  );
-  polygon-opacity: 0.4;
-}`
+			popupFieldInfo: [
+				{field: 'cartodb_id', fieldTitle: ''},
+				// For popup:
+				{field: 'name', fieldTitle: ''},
+				{field: 'st_stusps', fieldTitle: ''},
+				{field: 'prep_score', fieldTitle: 'Preparedness Rating'},
+				{field: 'prep_level', fieldTitle: ''},
+				{field: 'pc_score', fieldTitle: 'Physical Capacity'},
+				{field: 'hr_score', fieldTitle: 'Human Resources'},
+				{field: 'dem_score', fieldTitle: 'Demographic'},
+				{field: 'se_score', fieldTitle: 'Socioeconimic'},
+				{field: 'covid_score', fieldTitle: 'COVID-19'},
+			],
+			style: `
+				#layer {
+				  polygon-fill: ramp(
+					[prep_score],
+					(
+					  #dc0302,
+					  #DD6F4C,
+					  #1FADB6,
+					  #76D282,
+					  #77ff02
+					),
+					equal
+				  );
+				  polygon-opacity: 0.4;
+				}
+			`
 		}
 	]
 

@@ -36,7 +36,7 @@ class Map {
 				return
 			}
 			
-			const fields = layerInfo.options.featureClickColumns
+			const fields = layerInfo.popupFieldInfo.map(({field}) => field)
 			const popupInjectedWithData = fields.reduce(
 				(_popupStr, field) => {
 					const re = new RegExp(`{{${field}}}`,"g");
@@ -64,7 +64,10 @@ class Map {
 	_addMapLayerFromLayerExportInfo = (layerInfo) => {
 		const source = new carto.source.Dataset(layerInfo.dataset)
 		const style = new carto.style.CartoCSS(layerInfo.style)
-		const layer = new carto.layer.Layer(source, style, layerInfo.options)
+		const options = {
+			featureClickColumns: layerInfo.popupFieldInfo.map(({field}) => field)
+		}
+		const layer = new carto.layer.Layer(source, style, options)
 		
 		this._cartoClient.addLayer(layer);
 		return layer

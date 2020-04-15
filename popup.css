@@ -141,6 +141,7 @@
 
 .leaflet-popup-content-wrapper {
 	padding: 0;
+	background-color: var(--background-color);
 }
 
 .leaflet-popup-content-wrapper .leaflet-popup-content {
