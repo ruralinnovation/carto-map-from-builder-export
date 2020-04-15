@@ -8,7 +8,7 @@ const popupHTMLTemplate = `
       <div class="rating-title">OVERALL RATING</div>
     </div>
     <div class="title-and-number-container overall">
-      <div class="rating-title overall">{{prep_level}}}</div>
+      <div class="rating-title overall">{{prep_level}}</div>
       <div class="rating-number">{{prep_score}}</div>
     </div>
     <div class='gradient-container'>
