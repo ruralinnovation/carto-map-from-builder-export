@@ -39,8 +39,9 @@
 		{
 			dataset: 'county_preparedness_score_v0_3',
 			options: {
-				featureClickColumns: ['cartodb_id'],
-				featureOverColumns: [
+				featureClickColumns: [
+					'cartodb_id',
+				  	// For popup:
 					'name',
 					'st_stusps',
 					'prep_score',
@@ -55,7 +56,8 @@
 					'pct_65_over_2018',
 					'svi_socioeconomic',
 					'icuover_max_needed_100k',
-				]
+				],
+				featureOverColumns: [],
 			},
 			style: `#layer {
   polygon-fill: ramp(

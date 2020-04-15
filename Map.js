@@ -24,17 +24,20 @@ class Map {
 		
 		this.addPopupFor(this._countyPrepLayer, this._countyPrepLayerInfo)
 		
-		// TODO: move somewhere better
-		this._countyPrepLayer.on('featureClicked', featureEvent => this._toggleClickedFeatureBorder(featureEvent, this._countyPrepLayerInfo.dataset, this._map))
 	}
 	
 	
 	addPopupFor = (layer, layerInfo) => {
 		const popup = L.popup({ closeButton: true });
 		
-		const openPopup = (featureEvent) => {
-			const fields = layerInfo.options.featureOverColumns
+		const updatePopup = (featureEvent) => {
+			const { existingPopupIsTogglingOff } = this._toggleClickedFeatureBorder(featureEvent, layerInfo.dataset, this._map) || {}
+			if (existingPopupIsTogglingOff) {
+				this.closePopup()
+				return
+			}
 			
+			const fields = layerInfo.options.featureClickColumns
 			const popupInjectedWithData = fields.reduce(
 				(_popupStr, field) => {
 					const re = new RegExp(`{{${field}}}`,"g");
@@ -50,18 +53,9 @@ class Map {
 			}
 		}
 		
-		const setPopupsClick = () => {
-			layer.off('featureOver');
-			layer.off('featureOut');
-			layer.on('featureClicked', openPopup);
-		}
-		
-		const setPopupsHover = () => {
-			layer.off('featureClicked');
-			layer.on('featureOver', openPopup);
-			layer.on('featureOut', this.closePopup);
-		}
-		setPopupsClick()
+		layer.off('featureOver');
+		layer.off('featureOut');
+		layer.on('featureClicked', updatePopup);
 	}
 	
 	
@@ -108,8 +102,7 @@ class Map {
 			map.removeLayer(existingBoundary)
 			if (this._clickedLayer.cartodb_id === clickedPolygonCartoDBId) {
 				this._clickedLayer = {}
-				this.closePopup()
-				return
+				return { existingPopupIsTogglingOff: true }
 			}
 		}
 		
