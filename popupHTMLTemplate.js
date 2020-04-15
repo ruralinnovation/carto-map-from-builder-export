@@ -18,58 +18,8 @@ const popupHTMLTemplate = `
     </div>
   </div>
   
-<!--   SUB-CATEGORIES: -->
+<!-- GENERATED FIELDS GO HERE: -->
 
-  <div class="pillar-rating-container">
-    <div class="title-and-number-container">
-      <div class="rating-title">PHYSICAL CAPACITY</div>
-       <div class="rating-number">{{pc_score}}</div>
-    </div>
-    <div class="bar-container">
-      <div class="bar" />
-    </div>
-  </div>
-
-  <div class="pillar-rating-container">
-    <div class="title-and-number-container">
-      <div class="rating-title">human resources</div>
-       <div class="rating-number">{{hr_score}}</div>
-    </div>
-    <div class="bar-container">
-      <div class="bar" />
-    </div>
-  </div>
-
-  <div class="pillar-rating-container">
-    <div class="title-and-number-container">
-      <div class="rating-title">demographic</div>
-       <div class="rating-number">{{dem_score}}</div>
-    </div>
-    <div class="bar-container">
-      <div class="bar" />
-    </div>
-  </div>
-
-  <div class="pillar-rating-container">
-    <div class="title-and-number-container">
-      <div class="rating-title">socio-economic</div>
-       <div class="rating-number">{{se_score}}</div>
-    </div>
-    <div class="bar-container">
-      <div class="bar" />
-    </div>
-  </div>
-
-  <div class="pillar-rating-container">
-    <div class="title-and-number-container">
-      <div class="rating-title">Covid-19</div>
-       <div class="rating-number">{{covid_score}}</div>
-    </div>
-    <div class="bar-container">
-      <div class="bar" />
-    </div>
-  </div>
-  
 </div>
 </div>
 
