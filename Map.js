@@ -2,7 +2,7 @@ class Map {
 	constructor(rootId, cartoClientCredentials, layers) {
 		// Initialize constants
 		this._COUNTY_LEVEL_ZOOM = 8
-		this._cartoClientCredentials = cartoClientCredentials
+		this._dataFetcher = new DataFetcher(cartoClientCredentials)
 		this._cartoClient = new carto.Client(cartoClientCredentials);
 		this._map = L.map(rootId).setView([38.63765, -100.55221], 3.8);
 		this._map.scrollWheelZoom.disable();
@@ -23,7 +23,6 @@ class Map {
 		this._addLayersToMap()
 		
 		this.addPopupFor(this._countyPrepLayer, this._countyPrepLayerInfo)
-		
 	}
 	
 	
@@ -71,29 +70,6 @@ class Map {
 		return layer
 	}
 	
-	// TODO: this really deserves own sub-class
-	_getCartoDataPromise = (cartoLayerId, fields, sqlFilter = '') => {
-		const config = {
-			"CARTO_SERVER": "https://ruralinnovation-admin.carto.com",
-		}
-		
-		const DEV_SQL_CLIENT = axios.create({
-			method: 'get',
-			url: `${config.CARTO_SERVER}/api/v2/sql`
-		})
-		
-		const sqlQuery = {query: `SELECT ${fields} FROM "${this._cartoClientCredentials.username}".${cartoLayerId} ${sqlFilter}`}
-		const promise = DEV_SQL_CLIENT.request({
-			params: { q: sqlQuery.query, api_key: this._cartoClientCredentials.apiKey, data: sqlQuery }
-		})
-		
-		return promise.then(res => res.data.rows)
-	}
-	
-	_fetchFeatureOutline = (cartoTableName, clickedPolygonCartoDBId) => {
-		return this._getCartoDataPromise(cartoTableName, 'ST_asGeoJSON(ST_Boundary(the_geom)) as geom', `WHERE cartodb_id = ${clickedPolygonCartoDBId}`)
-	}
-	
 	_toggleClickedFeatureBorder = (featureEvent, cartoTableName, map) => {
 		const clickedPolygonCartoDBId = featureEvent.data.cartodb_id;
 		
@@ -106,8 +82,7 @@ class Map {
 			}
 		}
 		
-		// Use CARTO SQL API to get the boundaries of the polygons to highlight them when click
-		this._fetchFeatureOutline(cartoTableName, clickedPolygonCartoDBId)
+		this._dataFetcher.fetchFeatureOutline(cartoTableName, clickedPolygonCartoDBId)
 			.then(data => {
 				const geom = data[0].geom;
 				const boundary = L.geoJson(JSON.parse(geom), {
