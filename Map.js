@@ -60,6 +60,7 @@ class Map {
 	
 	_addPopupFor = (layer, layerInfo) => {
 		const popup = L.popup({ closeButton: true });
+		popup.on('remove', this._removeAnyExistingClickedFeatureBorder);
 		
 		const updatePopup = (featureEvent) => {
 			const { existingPopupIsTogglingOff } = this._toggleClickedFeatureBorder(featureEvent, layerInfo.dataset, this._map) || {}
@@ -97,16 +98,20 @@ class Map {
 		return layer
 	}
 	
-	_toggleClickedFeatureBorder = (featureEvent, cartoTableName, map) => {
-		const clickedPolygonCartoDBId = featureEvent.data.cartodb_id;
-		
+	_removeAnyExistingClickedFeatureBorder = () => {
 		const existingBoundary = this._clickedLayer.boundary
 		if (existingBoundary) {
-			map.removeLayer(existingBoundary)
-			if (this._clickedLayer.cartodb_id === clickedPolygonCartoDBId) {
-				this._clickedLayer = {}
-				return { existingPopupIsTogglingOff: true }
-			}
+			this._map.removeLayer(existingBoundary)
+		}
+	}
+	
+	
+	_toggleClickedFeatureBorder = (featureEvent, cartoTableName) => {
+		this._removeAnyExistingClickedFeatureBorder()
+		const clickedPolygonCartoDBId = featureEvent.data.cartodb_id;
+		if (this._clickedLayer.cartodb_id === clickedPolygonCartoDBId) {
+			this._clickedLayer = {}
+			return { existingPopupIsTogglingOff: true }
 		}
 		
 		this._dataFetcher.fetchFeatureOutline(cartoTableName, clickedPolygonCartoDBId)
@@ -119,7 +124,7 @@ class Map {
 					}
 				});
 				
-				map.addLayer(boundary);
+				this._map.addLayer(boundary);
 				this._clickedLayer.boundary = boundary
 				this._clickedLayer.cartodb_id = clickedPolygonCartoDBId
 			})
