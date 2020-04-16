@@ -3,7 +3,7 @@
 :root {
 	--background-color: black;
 	--header-color: #131313;
-	--popup-height: 248px; /* <--- adjust as needed */
+	--popup-height: 200px; /* <--- adjust as needed */
 	--popup-width: 278px;
 
 	--title-and-number-padding-bottom: 8px;
