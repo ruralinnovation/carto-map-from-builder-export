@@ -3,6 +3,7 @@ class Map {
 		// Initialize constants
 		this._COUNTY_LEVEL_ZOOM = 8
 		this._dataFetcher = new DataFetcher(cartoClientCredentials)
+		this._popupGenerator = new PopupGenerator()
 		this._cartoClient = new carto.Client(cartoClientCredentials);
 		this._map = L.map(rootId).setView([38.63765, -100.55221], 3.8);
 		this._map.scrollWheelZoom.disable();
@@ -25,38 +26,6 @@ class Map {
 		this._addPopupFor(this._countyPrepLayer, this._countyPrepLayerInfo)
 	}
 	
-	generateScoreField = (fieldValue, title) => `
-			<div class="pillar-rating-container">
-				<div class="title-and-number-container">
-					<div class="rating-title">${title}</div>
-					 <div class="rating-number">${fieldValue}</div>
-				</div>
-				<div class="bar-container">
-					<div class="bar" style="width: ${fieldValue}%" />
-				</div>
-			</div>
-		`
-	
-	// TODO: popup code should get its own class
-	_generatePopupHTML = (layerInfo, featureEvent) => {
-		const GENERATE_SECTIONS_FLAG = '<!-- GENERATED FIELDS GO HERE: -->'
-		const injectedFields = layerInfo.popupFieldInfo.reduce((accumulator, {field, fieldTitle}) => fieldTitle ? accumulator : [...accumulator, field], [])
-		const popupInjectedWithData = injectedFields.reduce(
-			(_popupStr, field) => {
-				const re = new RegExp(`{{${field}}}`,'g');
-				return _popupStr.replace(re, featureEvent.data[field])
-			},
-			popupHTMLTemplate,
-		)
-		
-		const generatedFieldSections = layerInfo.popupFieldInfo.reduce(
-			(_sections, {field, fieldTitle}) => fieldTitle ? _sections + this.generateScoreField(featureEvent.data[field], fieldTitle) : _sections,
-			[],
-		)
-		
-		return popupInjectedWithData.replace(GENERATE_SECTIONS_FLAG, generatedFieldSections)
-	}
-	
 	
 	_addPopupFor = (layer, layerInfo) => {
 		const popup = L.popup({ closeButton: true });
@@ -69,7 +38,7 @@ class Map {
 				return
 			}
 			
-			const popupInjectedWithData = this._generatePopupHTML(layerInfo, featureEvent)
+			const popupInjectedWithData = this._popupGenerator.generateScorePopupHTML(layerInfo, featureEvent)
 			popup.setContent(popupInjectedWithData);
 			popup.setLatLng(featureEvent.latLng);
 			if (!popup.isOpen()) {
