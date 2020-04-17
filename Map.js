@@ -1,6 +1,6 @@
 class Map {
 	constructor(rootId, cartoClientCredentials, layers) {
-		// Initialize constants
+		// Initialize constants, classes, and map elements
 		this._COUNTY_LEVEL_ZOOM = 8
 		this._dataFetcher = new DataFetcher(cartoClientCredentials)
 		this._popupGenerator = new PopupGenerator()
@@ -11,6 +11,7 @@ class Map {
 			'https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png',
 			{ maxZoom: 18 },
 		).addTo(this._map);
+		this._popup = L.popup({ closeButton: true });
 		
 		// State
 		this._clickedLayer = {
@@ -20,42 +21,17 @@ class Map {
 		
 		// Layers
 		this._countyPrepLayerInfo = layers[0]
-		this._countyPrepLayer = this._addMapLayerFromLayerExportInfo(this._countyPrepLayerInfo)
+		this._countyPrepLayer = this._addMapLayerFromLayerInfo(this._countyPrepLayerInfo)
 		this._addLayersToMap()
 		
 		this._addPopupFor(this._countyPrepLayer, this._countyPrepLayerInfo)
 	}
 	
 	
-	_addPopupFor = (layer, layerInfo) => {
-		const popup = L.popup({ closeButton: true });
-		popup.on('remove', this._removeAnyExistingClickedFeatureBorder);
-		
-		const updatePopup = (featureEvent) => {
-			const { existingPopupIsTogglingOff } = this._toggleClickedFeatureBorder(featureEvent, layerInfo.dataset, this._map) || {}
-			if (existingPopupIsTogglingOff) {
-				this.closePopup()
-				return
-			}
-			
-			const popupInjectedWithData = this._popupGenerator.generateScorePopupHTML(layerInfo, featureEvent)
-			popup.setContent(popupInjectedWithData);
-			popup.setLatLng(featureEvent.latLng);
-			if (!popup.isOpen()) {
-				popup.openOn(this._map);
-			}
-		}
-		
-		layer.off('featureOver');
-		layer.off('featureOut');
-		layer.on('featureClicked', updatePopup);
-	}
-	
-	
 	_addLayersToMap = () => this._cartoClient.getLeafletLayer().addTo(this._map);
 	
 	
-	_addMapLayerFromLayerExportInfo = (layerInfo) => {
+	_addMapLayerFromLayerInfo = (layerInfo) => {
 		const source = new carto.source.Dataset(layerInfo.dataset)
 		const style = new carto.style.CartoCSS(layerInfo.style)
 		const options = {
@@ -71,6 +47,31 @@ class Map {
 		const existingBoundary = this._clickedLayer.boundary
 		if (existingBoundary) {
 			this._map.removeLayer(existingBoundary)
+		}
+	}
+	
+	
+	_addPopupFor = (layer, layerInfo) => {
+		this._popup.on('remove', this._removeAnyExistingClickedFeatureBorder);
+		
+		layer.off('featureOver');
+		layer.off('featureOut');
+		layer.on('featureClicked', featureEvent => this.updateOrToggleSelectedRegion(featureEvent, layerInfo));
+	}
+	
+	
+	updateOrToggleSelectedRegion = (featureEvent, layerInfo) => {
+		const { existingPopupIsTogglingOff } = this._toggleClickedFeatureBorder(featureEvent, layerInfo.dataset, this._map) || {}
+		if (existingPopupIsTogglingOff) {
+			this.closePopup()
+			return
+		}
+		
+		const popupInjectedWithData = this._popupGenerator.generateScorePopupHTML(layerInfo, featureEvent)
+		this._popup.setContent(popupInjectedWithData);
+		this._popup.setLatLng(featureEvent.latLng);
+		if (!this._popup.isOpen()) {
+			this._popup.openOn(this._map);
 		}
 	}
 	
