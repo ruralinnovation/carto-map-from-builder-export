@@ -23,6 +23,7 @@
 <body>
 
 <div id="map">
+
 </div>
 
 <script src="popupHTMLTemplate.js"></script>
@@ -75,20 +76,19 @@
 
 	const map = new Map('map', cartoClientCredentials, layers)
 
-	const manhattanLatLon = { lon: -73.96777, lat: 40.68349 }
-	const windsorCountyVT = { lon: -72.39810, lat: 43.49662 }
-
-	// setTimeout(() => {
-	// 	map.flyToCounty(manhattanLatLon)
-	// }, 2000)
-	//
-	// setTimeout(() => {
-	// 	map.flyToCounty(windsorCountyVT)
-	// }, 5000)
-
-
-
+	const sampleCounties = [
+		{"cartodb_id":1,"name":"Highlands","st_stusps":"FL","lat":27.3410799,"lon":-81.3423534},
+		{"cartodb_id":100,"name":"Randolph","st_stusps":"WV","lat":38.7810953,"lon":-79.8677881}
+	]
 
 </script>
+
+<div style="z-index: 10000; position: absolute; top: 10px; left: 200px; display: flex; padding: 12px; border-radius: 12px; background: black;">
+	<div style="color: white">Map Class API demo: </div>
+	<button onclick="map.selectCounty(sampleCounties[0])">Select county Highlands, FL</button>
+	<button onclick="map.selectCounty(sampleCounties[1])">Select county Randolph, WV</button>
+	<button onclick="map.closePopup()">Close Popup</button>
+</div>
+
 </body>
 </html>

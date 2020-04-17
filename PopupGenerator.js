@@ -14,6 +14,9 @@ class PopupGenerator {
 		`
 	
 	
+	// Public methods:
+	
+	
 	generateScorePopupHTML = (layerInfo, featureEvent) => {
 		const GENERATE_SECTIONS_FLAG = '<!-- GENERATED FIELDS GO HERE: -->'
 		const injectedFields = layerInfo.popupFieldInfo.reduce((accumulator, {field, fieldTitle}) => fieldTitle ? accumulator : [...accumulator, field], [])

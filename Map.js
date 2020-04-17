@@ -56,11 +56,11 @@ class Map {
 		
 		layer.off('featureOver');
 		layer.off('featureOut');
-		layer.on('featureClicked', featureEvent => this.updateOrToggleSelectedRegion(featureEvent, layerInfo));
+		layer.on('featureClicked', featureEvent => this._updateOrToggleSelectedRegion(featureEvent, layerInfo));
 	}
 	
 	
-	updateOrToggleSelectedRegion = (featureEvent, layerInfo) => {
+	_updateOrToggleSelectedRegion = (featureEvent, layerInfo) => {
 		const { existingPopupIsTogglingOff } = this._toggleClickedFeatureBorder(featureEvent, layerInfo.dataset, this._map) || {}
 		if (existingPopupIsTogglingOff) {
 			this.closePopup()
@@ -75,12 +75,13 @@ class Map {
 		}
 	}
 	
+	_clearClickedLayers = () => this._clickedLayer = {}
 	
 	_toggleClickedFeatureBorder = (featureEvent, cartoTableName) => {
 		this._removeAnyExistingClickedFeatureBorder()
 		const clickedPolygonCartoDBId = featureEvent.data.cartodb_id;
 		if (this._clickedLayer.cartodb_id === clickedPolygonCartoDBId) {
-			this._clickedLayer = {}
+			this._clearClickedLayers()
 			return { existingPopupIsTogglingOff: true }
 		}
 		
@@ -100,16 +101,37 @@ class Map {
 			})
 	}
 	
+	_flyToCounty = (latLon, zoom = null) => {
+		const TRANSITION_DURATION = 3
+		this._map.flyTo(
+			latLon,
+			typeof(zoom) === 'number' || this._COUNTY_LEVEL_ZOOM,
+			{ duration: TRANSITION_DURATION }
+		)
+	}
+	
 	
 	// Public methods:
 	
 	
-	flyToCounty = (latLon, zoom = null) => {
-		this._map.flyTo(
-			latLon,
-			typeof(zoom) === 'number' || this._COUNTY_LEVEL_ZOOM,
-		)
+	closePopup = () => {
+		this._map.closePopup();
+		this._clearClickedLayers();
 	}
 	
-	closePopup = () => this._map.closePopup();
+	
+	selectCounty = (countyData) => {
+		const latLng = [countyData.lat, countyData.lon]
+		
+		this._updateOrToggleSelectedRegion(
+			{
+				data: countyData,
+				latLng,
+			},
+			this._countyPrepLayerInfo
+		)
+		
+		this._flyToCounty(latLng)
+	}
+	
 }
