@@ -1,16 +1,18 @@
 class DataFetcher {
-	constructor(cartoClientCredentials) {
+	constructor(
+		cartoClientCredentials = {
+			apiKey: 'default_public',
+			username: 'ruralinnovation-admin',
+			CARTO_SERVER: "https://ruralinnovation-admin.carto.com",
+		}
+	) {
 		this._cartoClientCredentials = cartoClientCredentials
 	}
 	
 	fetchSQL = (cartoLayerId, fields, sqlFilter = '') => {
-		const config = {
-			"CARTO_SERVER": "https://ruralinnovation-admin.carto.com",
-		}
-		
 		const DEV_SQL_CLIENT = axios.create({
 			method: 'get',
-			url: `${config.CARTO_SERVER}/api/v2/sql`
+			url: `${this._cartoClientCredentials.CARTO_SERVER}/api/v2/sql`
 		})
 		
 		const sqlQuery = {query: `SELECT ${fields} FROM "${this._cartoClientCredentials.username}".${cartoLayerId} ${sqlFilter}`}
