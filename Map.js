@@ -19,13 +19,18 @@ class Map {
 			boundary: null,
 		}
 		
-		// Layers
-		// Specifically add the County Prep Layer to the map with a popup)
-		this._countyPrepLayerInfo = layers[0]
-		this._countyPrepLayer = this._addMapLayerFromLayerInfo(this._countyPrepLayerInfo)
-		this._addPopupFor(this._countyPrepLayer, this._countyPrepLayerInfo, this._popupGenerator.generateCountyPrepPopupHTML)
+		// Layers:
 		
-		// [add more layers here]
+		// Specifically add the County Prep Layer to the map with a popup)
+		// this._countyPrepLayerInfo = layers[CARTO_LAYERS.countyPreparedness]
+		// this._countyPrepLayer = this._addMapLayerFromLayerInfo(this._countyPrepLayerInfo)
+		// this._addPopupFor(this._countyPrepLayer, this._countyPrepLayerInfo, this._popupGenerator.generateCountyPrepPopupHTML)
+		
+		this._closedHospitalDriveTimeRadiusInfo = layers[CARTO_LAYERS.closedHospitalDriveTimeRadius]
+		this._closedHospitalDriveTimeRadiusLayer = this._addMapLayerFromLayerInfo(this._closedHospitalDriveTimeRadiusInfo)
+		this._addPopupFor(this._closedHospitalDriveTimeRadiusLayer, this._closedHospitalDriveTimeRadiusInfo, this._popupGenerator.closedHospitalDriveTimeRadiusPopupHTML)
+		
+		// [add more layers here...]
 		
 		this._addLayersToMap()
 	}

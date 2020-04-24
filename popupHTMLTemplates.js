@@ -1,4 +1,4 @@
-const popupHTMLTemplate = `
+const countyPrepHTMLPopupTemplate = `
 <div class="popup-fixed-container">
   <div class="popup-padding-wrapper">
   <div class="location-header">{{name}}, {{st_stusps}}</div>
@@ -25,4 +25,15 @@ const popupHTMLTemplate = `
 
 
 
+`
+
+const closedHospitalDrivetimeRadiusHTMLPopupTemplate = `
+	<div class="popup-fixed-container">
+		<div class="popup-padding-wrapper">
+		<div class="location-header">{{name}}, {{state}}</div>
+		
+		<!-- GENERATED FIELDS GO HERE (do not delete, this is a flag for string search) -->
+	
+		</div>
+	</div>
 `

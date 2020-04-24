@@ -26,28 +26,34 @@
 
 </div>
 
-<script src="popupHTMLTemplate.js"></script>
+<script src="popupHTMLTemplates.js"></script>
 <script src="DataFetcher.js"></script>
 <script src="PopupGenerator.js"></script>
 <script src="Map.js"></script>
 
 <script>
 
+	const CARTO_LAYERS = {
+		countyPreparedness: 'county_preparedness_score_v0_5',
+		closedHospitalDriveTimeRadius: 'cori_master_closed_hospitals_dataset_drive_time'
+	}
+
 	const cartoClientCredentials = {
-		apiKey: 'QGkZpg8Qr_kqsbVQirbS0A',
+		apiKey: 'default_public',
 		username: 'ruralinnovation-admin'
 	}
 
-	const layers = [
-		{
-			dataset: 'county_preparedness_score_v0_5',
+	const layers = {
+		[CARTO_LAYERS.countyPreparedness]: {
+			dataset: CARTO_LAYERS.countyPreparedness,
 			popupFieldInfo: [
+				// Search and replace these fields in the popup template (if they exist):
 				{field: 'cartodb_id'},
-				// For popup:
 				{field: 'name'},
 				{field: 'st_stusps'},
 				{field: 'prep_score'},
 				{field: 'prep_level'},
+				// Iterate over these fields and inject each as a section into the popup template:
 				{field: 'pc_score', fieldTitle: 'Physical Capacity'},
 				{field: 'hr_score', fieldTitle: 'Human Resources'},
 				{field: 'dem_score', fieldTitle: 'Demographic'},
@@ -70,8 +76,32 @@
 				  polygon-opacity: 0.4;
 				}
 			`
+		},
+		[CARTO_LAYERS.closedHospitalDriveTimeRadius]: {
+			dataset: CARTO_LAYERS.closedHospitalDriveTimeRadius,
+			popupFieldInfo: [
+				{field: 'cartodb_id'},
+				// Search and replace these fields in the popup template (if they exist):
+				{field: 'name'},
+				{field: 'state'},
+				// Iterate over these fields and inject each as a section into the popup template:
+				{field: 'type', fieldTitle: 'Hospital Type'},
+				{field: 'name', fieldTitle: 'Hospital Name'},
+				{field: 'city', fieldTitle: 'City'},
+			],
+			style: `
+				#layer {
+				  polygon-fill: #ffffff;
+				  polygon-opacity: 0.8;
+				}
+				#layer::outline {
+				  line-width: 1;
+				  line-color: #000000;
+				  line-opacity: 0.09;
+				}
+			`
 		}
-	]
+	}
 
 
 	const map = new Map('map', cartoClientCredentials, layers)
