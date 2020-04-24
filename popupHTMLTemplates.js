@@ -15,7 +15,7 @@ const popupHTMLTemplates = {
 					</div>
 					<div class='gradient-container'>
 						<div style="-webkit-transform: translateX(-12px)">
-							<div class='gradient' style="left: {{prep_score}}%" />
+							<div class="gradient-triangle-marker" style="left: {{prep_score}}%" />
 						</div>
 					</div>
 				</div>

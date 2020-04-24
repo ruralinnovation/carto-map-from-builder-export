@@ -104,10 +104,11 @@
 	border-radius: 4px;
 	background-color: rgba(10, 10, 10, 0.1);
 	position: relative;
-	background: linear-gradient(270deg, #DC0202 0%, #FF6B00 50%, #1EADB6 75%, #77FF02 100%);
+	background: linear-gradient(270deg, #77FF02 0%, #1EADB6 50%, #FF6B00 75%, #DC0202 100%);
+	animation: slidein 500ms;
 }
 
-.gradient {
+.gradient-triangle-marker {
 	border-radius: 0px;
 	height: 0px;
 	width: 0px;
@@ -117,6 +118,16 @@
 	border-left: 12px solid transparent;
 	border-right: 12px solid transparent;
 	border-top: 16px solid white;
+}
+
+@keyframes slidein {
+	from {
+		width: 0%;
+	}
+
+	to {
+		width: 100%;
+	}
 }
 
 .bar-container {
