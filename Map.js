@@ -6,7 +6,7 @@ class Map {
 		this._popupGenerator = new PopupGenerator()
 		this._cartoClient = new carto.Client(cartoClientCredentials);
 		this._map = L.map(rootId).setView([38.63765, -100.55221], 3.8);
-		this._map.scrollWheelZoom.disable();
+		// this._map.scrollWheelZoom.disable();
 		L.tileLayer(
 			'https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png',
 			{ maxZoom: 18 },
@@ -14,9 +14,12 @@ class Map {
 		this._popup = L.popup({ closeButton: true });
 		
 		// State
-		this._clickedLayer = {
-			cartodb_id: null,
-			boundary: null,
+		this._clickedLayersByLayerName = {
+			// [cartoLayerName]: {
+			// 			cartodb_id: null,
+			// 			boundary: null,
+			// 		}
+			// ...
 		}
 		
 		// Layers:
@@ -88,7 +91,10 @@ class Map {
 	_toggleClickedFeatureBorder = (featureEvent, cartoTableName) => {
 		this._removeAnyExistingClickedFeatureBorder()
 		const clickedPolygonCartoDBId = featureEvent.data.cartodb_id;
-		if (this._clickedLayer.cartodb_id === clickedPolygonCartoDBId) {
+		const layerIsAlreadySelected = Object.values(this._clickedLayersByLayerName).some(
+			clickedLayer => clickedLayer.cartodb_id === clickedPolygonCartoDBId
+		)
+		if (layerIsAlreadySelected) {
 			this._clearClickedLayers()
 			return { existingPopupIsTogglingOff: true }
 		}
@@ -104,8 +110,9 @@ class Map {
 				});
 				
 				this._map.addLayer(boundary);
-				this._clickedLayer.boundary = boundary
-				this._clickedLayer.cartodb_id = clickedPolygonCartoDBId
+				this._clickedLayersByLayerName[cartoTableName] = {}
+				this._clickedLayersByLayerName[cartoTableName].boundary = boundary
+				this._clickedLayersByLayerName[cartoTableName].cartodb_id = clickedPolygonCartoDBId
 			})
 	}
 	
