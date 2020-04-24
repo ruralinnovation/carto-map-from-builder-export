@@ -107,16 +107,15 @@
 	const map = new Map('map', cartoClientCredentials, layers)
 
 	const sampleCounties = [
-		{"cartodb_id":1,"name":"Highlands","st_stusps":"FL","lat":27.3410799,"lon":-81.3423534},
-		{"cartodb_id":100,"name":"Randolph","st_stusps":"WV","lat":38.7810953,"lon":-79.8677881}
+		{"cartodb_id":1,"name":"Highlands","st_stusps":"FL","prep_score":1,"prep_level":"Very Low","pc_score":12,"hr_score":11,"dem_score":1,"se_score":18,"covid_score":38,"lat":27.3410799,"lon":-81.3423534},
+		{"cartodb_id":2,"name":"Lubbock","st_stusps":"TX","prep_score":22,"prep_level":"Low","pc_score":7,"hr_score":6,"dem_score":94,"se_score":47,"covid_score":39,"lat":33.6114688,"lon":-101.8199438}
 	]
-
 </script>
 
 <div style="z-index: 10000; position: absolute; top: 10px; left: 200px; display: flex; padding: 12px; border-radius: 12px; background: black; align-items: baseline; opacity: 0.8;">
 	<div style="color: white; font-family: sans-serif">Map Class API demo: </div>
 	<button style="padding: 8px; margin: 8px; border-radius: 4px;" onclick="map.selectCountyInCountyPrepLayer(sampleCounties[0])">Select county Highlands, FL</button>
-	<button style="padding: 8px; margin: 8px; border-radius: 4px;" onclick="map.selectCountyInCountyPrepLayer(sampleCounties[1])">Select county Randolph, WV</button>
+	<button style="padding: 8px; margin: 8px; border-radius: 4px;" onclick="map.selectCountyInCountyPrepLayer(sampleCounties[1])">Select county Lubbock, TX</button>
 	<button style="padding: 8px; margin: 8px; border-radius: 4px;" onclick="map.closePopup()">Close Popup</button>
 </div>
 
