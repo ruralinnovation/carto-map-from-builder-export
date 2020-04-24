@@ -35,7 +35,7 @@ class PopupGenerator {
 				const re = new RegExp(`{{${field}}}`,'g');
 				return _popupStr.replace(re, featureEvent.data[field])
 			},
-			countyPrepHTMLPopupTemplate,
+			popupHTMLTemplates.countyPrepHTMLPopupTemplate,
 		)
 		
 		const generatedFieldSections = layerInfo.popupFieldInfo.reduce(
@@ -53,7 +53,7 @@ class PopupGenerator {
 				const re = new RegExp(`{{${field}}}`,'g');
 				return _popupStr.replace(re, featureEvent.data[field])
 			},
-			closedHospitalDrivetimeRadiusHTMLPopupTemplate,
+			popupHTMLTemplates.closedHospitalDrivetimeRadiusHTMLPopupTemplate,
 		)
 		
 		const generatedFieldSections = layerInfo.popupFieldInfo.reduce(
