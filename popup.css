@@ -112,7 +112,7 @@
 	height: 0px;
 	width: 0px;
 	position: absolute;
-	left: 75%; /* TODO: dynamicly set property */
+	left: 0; /* Property dynamically overwritten by data in JS */
 	top: -8px;
 	border-left: 12px solid transparent;
 	border-right: 12px solid transparent;

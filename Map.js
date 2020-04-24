@@ -55,10 +55,7 @@ class Map {
 	}
 	
 	_removeAnyExistingClickedFeatureBorder = () => {
-		const existingBoundary = this._clickedLayer.boundary
-		if (existingBoundary) {
-			this._map.removeLayer(existingBoundary)
-		}
+		Object.values(this._clickedLayersByLayerName).forEach(clickedLayer => this._map.removeLayer(clickedLayer.boundary))
 	}
 	
 	
