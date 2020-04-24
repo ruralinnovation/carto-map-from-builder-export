@@ -20,11 +20,14 @@ class Map {
 		}
 		
 		// Layers
+		// Specifically add the County Prep Layer to the map with a popup)
 		this._countyPrepLayerInfo = layers[0]
 		this._countyPrepLayer = this._addMapLayerFromLayerInfo(this._countyPrepLayerInfo)
-		this._addLayersToMap()
+		this._addPopupFor(this._countyPrepLayer, this._countyPrepLayerInfo, this._popupGenerator.generateCountyPrepPopupHTML)
 		
-		this._addPopupFor(this._countyPrepLayer, this._countyPrepLayerInfo)
+		// [add more layers here]
+		
+		this._addLayersToMap()
 	}
 	
 	
@@ -51,23 +54,23 @@ class Map {
 	}
 	
 	
-	_addPopupFor = (layer, layerInfo) => {
+	_addPopupFor = (layer, layerInfo, popupGeneratorFunction) => {
 		this._popup.on('remove', this._removeAnyExistingClickedFeatureBorder);
 		
 		layer.off('featureOver');
 		layer.off('featureOut');
-		layer.on('featureClicked', featureEvent => this._updateOrToggleSelectedRegion(featureEvent, layerInfo));
+		layer.on('featureClicked', featureEvent => this._updateOrToggleSelectedRegion(featureEvent, layerInfo, popupGeneratorFunction));
 	}
 	
 	
-	_updateOrToggleSelectedRegion = (featureEvent, layerInfo) => {
+	_updateOrToggleSelectedRegion = (featureEvent, layerInfo, popupGeneratorFunction) => {
 		const { existingPopupIsTogglingOff } = this._toggleClickedFeatureBorder(featureEvent, layerInfo.dataset, this._map) || {}
 		if (existingPopupIsTogglingOff) {
 			this.closePopup()
 			return
 		}
 		
-		const popupInjectedWithData = this._popupGenerator.generateScorePopupHTML(layerInfo, featureEvent)
+		const popupInjectedWithData = popupGeneratorFunction(layerInfo, featureEvent)
 		this._popup.setContent(popupInjectedWithData);
 		this._popup.setLatLng(featureEvent.latLng);
 		if (!this._popup.isOpen()) {
@@ -120,7 +123,7 @@ class Map {
 	}
 	
 	
-	selectCounty = (countyData) => {
+	selectCountyInCountyPrepLayer = (countyData) => {
 		const latLng = [countyData.lat, countyData.lon]
 		
 		this._updateOrToggleSelectedRegion(
@@ -128,7 +131,8 @@ class Map {
 				data: countyData,
 				latLng,
 			},
-			this._countyPrepLayerInfo
+			this._countyPrepLayerInfo,
+			this._popupGenerator.generateCountyPrepPopupHTML,
 		)
 		
 		this._flyToCounty(latLng)

@@ -17,8 +17,8 @@ class PopupGenerator {
 	// Public methods:
 	
 	
-	generateScorePopupHTML = (layerInfo, featureEvent) => {
-		const GENERATE_SECTIONS_FLAG = '<!-- GENERATED FIELDS GO HERE: -->'
+	generateCountyPrepPopupHTML = (layerInfo, featureEvent) => {
+		const GENERATE_SECTIONS_FLAG = '<!-- GENERATED FIELDS GO HERE (do not delete, this is a flag for string search) -->'
 		const injectedFields = layerInfo.popupFieldInfo.reduce((accumulator, {field, fieldTitle}) => fieldTitle ? accumulator : [...accumulator, field], [])
 		const popupInjectedWithData = injectedFields.reduce(
 			(_popupStr, field) => {

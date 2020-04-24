@@ -18,7 +18,7 @@ const popupHTMLTemplate = `
     </div>
   </div>
   
-<!-- GENERATED FIELDS GO HERE: -->
+<!-- GENERATED FIELDS GO HERE (do not delete, this is a flag for string search) -->
 
 </div>
 </div>
