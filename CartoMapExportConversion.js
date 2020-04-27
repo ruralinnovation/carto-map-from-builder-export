@@ -5,9 +5,20 @@ const CARTO_LAYERS = {
 }
 
 class CartoMapExportConversion {
-	constructor(exportedCartoMapInfo) {
+	constructor(exportedCartoMapInfo, cartoClientCredentials) {
 		this._exportedCartoMapInfo = exportedCartoMapInfo
+		this._cartoClientCredentials = cartoClientCredentials
 	}
+	
+	
+	_getCartoLayerName = (sql) => {
+		const {username} = this._cartoClientCredentials
+		const sqlUsername = `"${username}".`
+		return sql.split(' ')
+			.find(str => str.includes(sqlUsername))
+			.replace(sqlUsername, '')
+	}
+	
 	
 	_formatExportedLayer = (layerExportInfo) => {
 		const sql = layerExportInfo.options.query
@@ -15,12 +26,14 @@ class CartoMapExportConversion {
 		
 		const popupFields = layerExportInfo.infowindow.fields || []
 		const popupFieldInfo = popupFields.map(({name, position}) => ({
+			cartoLayerName: this._getCartoLayerName(sql),
 			field: name,
 			fieldTitle: layerExportInfo.infowindow.alternative_names[name],
 			position,
 		}))
 		
 		return {
+			cartoLayerName: '',
 			sql,
 			style,
 			popupFieldInfo,
@@ -28,8 +41,6 @@ class CartoMapExportConversion {
 	}
 	
 	getLayers = () => {
-		const cartoLayersInfo =	this._exportedCartoMapInfo.visualization.layers.filter(({kind}) => kind === 'carto')
-		const _layers = cartoLayersInfo.forEach(layerExportInfo => this._formatExportedLayer(layerExportInfo))
 		
 		const layers = {
 			[CARTO_LAYERS.countyPreparedness]: {
@@ -90,7 +101,10 @@ class CartoMapExportConversion {
 			`
 			}
 		}
+		const cartoLayersInfo =	this._exportedCartoMapInfo.visualization.layers.filter(({kind}) => kind === 'carto')
+		const _layers = cartoLayersInfo.map(layerExportInfo => this._formatExportedLayer(layerExportInfo))
 		
-		return layers
+		console.log(_layers)
+		return _layers
 	}
 }

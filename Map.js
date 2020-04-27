@@ -25,13 +25,17 @@ class Map {
 		// Layers:
 		
 		// Specifically add the County Prep Layer to the map with a popup)
-		this._countyPrepLayerInfo = layers[CARTO_LAYERS.countyPreparedness]
-		this._countyPrepLayer = this._addMapLayerFromLayerInfo(this._countyPrepLayerInfo)
-		this._addPopupFor(this._countyPrepLayer, this._countyPrepLayerInfo, this._popupGenerator.generateCountyPrepPopupHTML)
+		layers.forEach((layerInfo) => {
+			this._addMapLayerFromLayerInfo(layerInfo)
+			// this._addPopupFor(this._countyPrepLayer, layerInfo, this._popupGenerator.generateCountyPrepPopupHTML)
+		})
+		// this._countyPrepLayerInfo = layers[CARTO_LAYERS.countyPreparedness]
+		// this._countyPrepLayer = this._addMapLayerFromLayerInfo(this._countyPrepLayerInfo)
+		// this._addPopupFor(this._countyPrepLayer, this._countyPrepLayerInfo, this._popupGenerator.generateCountyPrepPopupHTML)
 		
-		this._closedHospitalDriveTimeRadiusInfo = layers[CARTO_LAYERS.closedHospitalDriveTimeRadius]
-		this._closedHospitalDriveTimeRadiusLayer = this._addMapLayerFromLayerInfo(this._closedHospitalDriveTimeRadiusInfo)
-		this._addPopupFor(this._closedHospitalDriveTimeRadiusLayer, this._closedHospitalDriveTimeRadiusInfo, this._popupGenerator.closedHospitalDriveTimeRadiusPopupHTML)
+		// this._closedHospitalDriveTimeRadiusInfo = layers[CARTO_LAYERS.closedHospitalDriveTimeRadius]
+		// this._closedHospitalDriveTimeRadiusLayer = this._addMapLayerFromLayerInfo(this._closedHospitalDriveTimeRadiusInfo)
+		// this._addPopupFor(this._closedHospitalDriveTimeRadiusLayer, this._closedHospitalDriveTimeRadiusInfo, this._popupGenerator.closedHospitalDriveTimeRadiusPopupHTML)
 		
 		// [add more layers here...]
 		
@@ -43,7 +47,7 @@ class Map {
 	
 	
 	_addMapLayerFromLayerInfo = (layerInfo) => {
-		const source = new carto.source.Dataset(layerInfo.dataset)
+		const source = new carto.source.SQL(layerInfo.sql)
 		const style = new carto.style.CartoCSS(layerInfo.style)
 		const options = {
 			featureClickColumns: layerInfo.popupFieldInfo.map(({field}) => field)

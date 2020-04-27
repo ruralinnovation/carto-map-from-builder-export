@@ -40,7 +40,7 @@
 		CARTO_SERVER: "https://ruralinnovation-admin.carto.com",
 	}
 
-	const layers = new CartoMapExportConversion(exportedCartoMapInfo).getLayers()
+	const layers = new CartoMapExportConversion(exportedCartoMapInfo, cartoClientCredentials).getLayers()
 	const map = new Map('map', cartoClientCredentials, layers)
 
 	const sampleCounties = [
