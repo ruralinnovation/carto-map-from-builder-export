@@ -1,9 +1,11 @@
 [![image](https://user-images.githubusercontent.com/6570507/80257078-fbd9d580-8634-11ea-90f7-9a9b59106d67.png)](https://ruralinnovation.github.io/carto-map-from-builder-export/)
 
-# Creating custom maps using CORI's CARTO data
+# Creating custom maps using CORI's CARTO data [Demo](https://ruralinnovation.github.io/carto-map-from-builder-export/)
 This is a starter template for building custom [carto.js](https://carto.com/developers/carto-js/) maps using Leaflet.js to render the map, and pulling map tiles and SQL requests to the Center on Rural Innovation's public access data.
 
-### [Demo](https://ruralinnovation.github.io/carto-map-from-builder-export/), [New Lab COVID Hackathon data guide Google Doc](https://docs.google.com/document/d/1zag0ROjz_drCAlQV1SnMERxcrno1nCwCXc0hlCpPwSI/edit?usp=sharing)
+**Most notably, we're pulling in all layers and layer meta-info from a CARTO Builder export.** 
+
+The long term aim is to be able to generate storymaps from layers styled in Builder before hand.
 
 ## High level technical overview
 - All work is on this branch, `gh-pages`, so any pushed commit can immediately be shared/demo-ed.
