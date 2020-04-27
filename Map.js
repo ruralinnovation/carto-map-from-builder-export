@@ -5,7 +5,7 @@ class Map {
 		this._dataFetcher = new DataFetcher(cartoClientCredentials)
 		this._popupGenerator = new PopupGenerator()
 		this._cartoClient = new carto.Client(cartoClientCredentials);
-		this._map = L.map(rootId).setView([38.63765, -100.55221], 3.8);
+		this._map = L.map(rootId).setView([38.63765, -100.55221], 5);
 		// this._map.scrollWheelZoom.disable();
 		L.tileLayer(
 			'https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png',
@@ -26,18 +26,9 @@ class Map {
 		
 		// Specifically add the County Prep Layer to the map with a popup)
 		layers.forEach((layerInfo) => {
-			this._addMapLayerFromLayerInfo(layerInfo)
-			// this._addPopupFor(this._countyPrepLayer, layerInfo, this._popupGenerator.generateCountyPrepPopupHTML)
+			const cartoLayer = this._addMapLayerFromLayerInfo(layerInfo)
+			this._addPopupFor(cartoLayer, layerInfo, this._popupGenerator.genericPopupHTML)
 		})
-		// this._countyPrepLayerInfo = layers[CARTO_LAYERS.countyPreparedness]
-		// this._countyPrepLayer = this._addMapLayerFromLayerInfo(this._countyPrepLayerInfo)
-		// this._addPopupFor(this._countyPrepLayer, this._countyPrepLayerInfo, this._popupGenerator.generateCountyPrepPopupHTML)
-		
-		// this._closedHospitalDriveTimeRadiusInfo = layers[CARTO_LAYERS.closedHospitalDriveTimeRadius]
-		// this._closedHospitalDriveTimeRadiusLayer = this._addMapLayerFromLayerInfo(this._closedHospitalDriveTimeRadiusInfo)
-		// this._addPopupFor(this._closedHospitalDriveTimeRadiusLayer, this._closedHospitalDriveTimeRadiusInfo, this._popupGenerator.closedHospitalDriveTimeRadiusPopupHTML)
-		
-		// [add more layers here...]
 		
 		this._addLayersToMap()
 	}
@@ -136,19 +127,20 @@ class Map {
 	}
 	
 	
-	selectCountyInCountyPrepLayer = (countyData) => {
-		const latLng = [countyData.lat, countyData.lon]
-		
-		this._updateOrToggleSelectedRegion(
-			{
-				data: countyData,
-				latLng,
-			},
-			this._countyPrepLayerInfo,
-			this._popupGenerator.generateCountyPrepPopupHTML,
-		)
-		
-		this._flyToCounty(latLng)
-	}
+	// TODO: make this generic so we can highlight regions from outside the class
+	// selectCountyInCountyPrepLayer = (countyData) => {
+	// 	const latLng = [countyData.lat, countyData.lon]
+	//
+	// 	this._updateOrToggleSelectedRegion(
+	// 		{
+	// 			data: countyData,
+	// 			latLng,
+	// 		},
+	// 		this._countyPrepLayerInfo,
+	// 		this._popupGenerator.generateCountyPrepPopupHTML,
+	// 	)
+	//
+	// 	this._flyToCounty(latLng)
+	// }
 	
 }

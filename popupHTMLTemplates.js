@@ -26,10 +26,10 @@ const popupHTMLTemplates = {
 		</div>
 	`,
 	
-	closedHospitalDrivetimeRadiusHTMLPopupTemplate: `
+	genericHTMLPopupTemplate: `
 		<div class="popup-fixed-container">
 			<div class="popup-padding-wrapper">
-			<div class="location-header">{{name}}, {{state}}</div>
+			<!--<div class="location-header">{{name}}, {{state}}</div>-->
 			
 			<!-- GENERATED FIELDS GO HERE (do not delete, this is a flag for string search) -->
 		
