@@ -64,7 +64,7 @@ class Map {
 	
 	
 	_updateOrToggleSelectedRegion = (featureEvent, layerInfo, popupGeneratorFunction) => {
-		const { existingPopupIsTogglingOff } = this._toggleClickedFeatureBorder(featureEvent, layerInfo.dataset, this._map) || {}
+		const { existingPopupIsTogglingOff } = this._toggleClickedFeatureBorder(featureEvent, layerInfo.cartoLayerName, this._map) || {}
 		if (existingPopupIsTogglingOff) {
 			this.closePopup()
 			return

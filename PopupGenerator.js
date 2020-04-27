@@ -32,7 +32,7 @@ class PopupGenerator {
 			(_sections, {field, fieldTitle}) => _sections + this._generateFieldIfFieldTitle(featureEvent.data[field], fieldTitle),
 			[],
 		)
-		debugger
+		
 		return popupInjectedWithData.replace(this._GENERATE_SECTIONS_FLAG, generatedFieldSections)
 	}
 }
