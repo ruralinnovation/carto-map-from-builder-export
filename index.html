@@ -1,70 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Single layer | CARTO</title>
+	<title>CORI Preparedness Score Demo</title>
 	<meta name="viewport" content="initial-scale=1.0">
 	<meta charset="utf-8">
+
+
 	<!-- Include Leaflet -->
 	<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
 	<link href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" rel="stylesheet">
 	<!-- Include CARTO.js -->
 	<script src="https://libs.cartocdn.com/carto.js/v4.2.0/carto.min.js"></script>
-	<link href="https://fonts.googleapis.com/css?family=Montserrat:600" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 	<link href="https://carto.com/developers/carto-js/examples/maps/public/style.css" rel="stylesheet">
+
+	<!--Other libraries-->
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+	<!--Internal CSS-->
+	<link rel="stylesheet" type="text/css" href="popup.css">
 </head>
 <body>
-<div id="map">
-</div>
-<!-- Description -->
-<aside class="toolbox">
-	<div class="box">
-		<header>
-			<h1>Add a layer</h1>
-			<button class="github-logo js-source-link"></button>
-		</header>
-		<section>
-			<p class="description open-sans">Add one CARTO layer to your map.</p>
-		</section>
-		<footer class="js-footer"></footer>
-	</div>
-</aside>
 
-<script src="map-export.js"></script>
+<div id="map">
+
+</div>
+<!--Hard coded map export (temp)-->
+<script src="exported-carto-map-info.js"></script>
+<script src="CartoMapExportConversion.js"></script>
+
+<script src="popupHTMLTemplates.js"></script>
+<script src="DataFetcher.js"></script>
+<script src="PopupGenerator.js"></script>
+<script src="Map.js"></script>
 
 <script>
-	const map = L.map('map').setView([30, 0], 3);
-	map.scrollWheelZoom.disable();
-
-	L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}.png', {
-		maxZoom: 18
-	}).addTo(map);
-
-	const client = new carto.Client({
-		apiKey: 'XtFj-mzsLe2EdgSGh_qV-Q',
-		username: 'ruralinnovation-admin'
-	});
-
-
-	// Bring in the export!
-	const createMapLayerFromLayerExportInfo = (layerExportInfo) => {
-		const source = new carto.source.SQL(layerExportInfo.options.query)
-
-		const style = new carto.style.CartoCSS(layerExportInfo.options.tile_style)
-
-		return new carto.layer.Layer(source, style)
+	const cartoClientCredentials = {
+		apiKey: 'default_public',
+		username: 'ruralinnovation-admin',
+		CARTO_SERVER: "https://ruralinnovation-admin.carto.com",
 	}
 
-	const countyPrepLayerInfo =	mapExportJSON.visualization.layers[1]
-	const countyPrepLayer = createMapLayerFromLayerExportInfo(countyPrepLayerInfo)
-
-	client.addLayer(countyPrepLayer);
-
-	// Final add
-	client.getLeafletLayer().addTo(map);
-
-
+	const layers = new CartoMapExportConversion(exportedCartoMapInfo, cartoClientCredentials).getLayers()
+	const map = new Map('map', cartoClientCredentials, layers)
 
 </script>
+
 </body>
 </html>
